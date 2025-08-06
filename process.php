@@ -1,6 +1,4 @@
 <?php
-header('Content-Type: application/json');
-
 // Simple configuration
 $admin_email = 'girjesh.ai25@gmail.com';
 $file_name = 'subscribers_list.txt';
@@ -10,8 +8,7 @@ $subscriber_email = $_POST['email'] ?? '';
 
 // Basic validation
 if (empty($subscriber_email) || !filter_var($subscriber_email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(['success' => false, 'message' => 'Invalid email address']);
-    exit;
+    die('Invalid email address');
 }
 
 // Save to file
@@ -27,8 +24,8 @@ $sent = mail($admin_email, $subject, $message);
 
 // Response
 if ($sent) {
-    echo json_encode(['success' => true, 'message' => 'Thank you for subscribing!']);
+    echo "Thank you for subscribing!";
 } else {
-    echo json_encode(['success' => false, 'message' => 'Subscription saved, but notification failed.']);
+    echo "Subscription saved, but notification failed.";
 }
 ?>
