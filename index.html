@@ -135,17 +135,20 @@
                 method: 'POST',
                 body: new FormData(form)
             })
-            .then(response => response.text())
-            .then(text => {
-                successMessage.textContent = text;
+            .then(response => response.json())  // Changed from text() to json()
+            .then(data => {
+                successMessage.textContent = data.message;
                 successMessage.style.display = 'block';
-                form.reset();
+                if (data.success) {
+                    form.reset();
+                }
                 setTimeout(() => {
                     successMessage.style.display = 'none';
                 }, 5000);
             })
             .catch(error => {
                 alert('Oops! Something went wrong. Please try again later.');
+                console.error('Error:', error);
             })
             .finally(() => {
                 submitButton.disabled = false;
