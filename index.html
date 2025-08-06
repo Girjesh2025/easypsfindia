@@ -1,34 +1,39 @@
-<?php
-// Simple configuration
-$admin_email = 'girjesh.ai25@gmail.com';
-$file_name = 'subscribers_list.txt';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon - EasyPDF India</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-// Get the email from POST request
-$subscriber_email = $_POST['email'] ?? '';
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            text-align: center;
+        }
 
-// Basic validation
-if (empty($subscriber_email) || !filter_var($subscriber_email, FILTER_VALIDATE_EMAIL)) {
-    die('Invalid email address');
-}
+        .logo {
+            font-size: 3rem;
+            color: #ff5722;
+            margin-bottom: 20px;
+        }
 
-// Save to file
-$date = date('Y-m-d H:i:s');
-file_put_contents($file_name, "$date - $subscriber_email\n", FILE_APPEND);
-
-// Prepare simple email
-$subject = "New Subscriber - EasyPDF India";
-$message = "New subscriber: $subscriber_email\nDate: $date";
-
-// Send email
-$sent = mail($admin_email, $subject, $message);
-
-// Response
-if ($sent) {
-    echo "Thank you for subscribing!";
-} else {
-    echo "Subscription saved, but notification failed.";
-}
-?>
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
             margin-bottom: 20px;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
         }
@@ -130,20 +135,17 @@ if ($sent) {
                 method: 'POST',
                 body: new FormData(form)
             })
-            .then(response => response.json())  // Changed from text() to json()
-            .then(data => {
-                successMessage.textContent = data.message;
+            .then(response => response.text())
+            .then(text => {
+                successMessage.textContent = text;
                 successMessage.style.display = 'block';
-                if (data.success) {
-                    form.reset();
-                }
+                form.reset();
                 setTimeout(() => {
                     successMessage.style.display = 'none';
                 }, 5000);
             })
             .catch(error => {
                 alert('Oops! Something went wrong. Please try again later.');
-                console.error('Error:', error);
             })
             .finally(() => {
                 submitButton.disabled = false;
