@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon - EasyPDF India</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 3rem;
+            color: #ff5722;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .highlight {
+            color: #ff5722;
+        }
+
+        main p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            margin: 0 auto 20px;
+        }
+
+        input[type="email"] {
+            padding: 15px;
+            font-size: 1rem;
+            width: 70%;
+            max-width: 300px;
+            border: none;
+            border-radius: 25px;
+            outline: none;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #ff5722;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #f4511e;
+            transform: scale(1.05);
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+
+        .success-message {
+            display: none;
+            color: #fff;
+            background: rgba(76, 175, 80, 0.9);
+            padding: 15px;
+            border-radius: 25px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <i class="fas fa-file-pdf logo"></i>
+        <header>
+            <h1>Easy<span class="highlight">PDF</span> India</h1>
+        </header>
+        <main>
+            <p>Your one-stop solution for all PDF needs is coming soon! We're working hard to bring you the easiest PDF tools and services in India.</p>
+            <p>Be the first to know when we launch:</p>
+            <form id="subscribe-form" method="post" action="process.php">
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <button type="submit">Notify Me</button>
+            </form>
+            <div id="success-message" class="success-message">
+                Thank you for subscribing! We'll keep you updated about our launch.
+            </div>
+        </main>
+        <footer>
+            <p>&copy; 2025 EasyPDF India. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('subscribe-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = this;
+            const successMessage = document.getElementById('success-message');
+            const submitButton = form.querySelector('button');
+            
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+
+            fetch('process.php', {
+                method: 'POST',
+                body: new FormData(form)
+            })
+            .then(response => response.text())
+            .then(text => {
+                successMessage.textContent = text;
+                successMessage.style.display = 'block';
+                form.reset();
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 5000);
+            })
+            .catch(error => {
+                alert('Oops! Something went wrong. Please try again later.');
+            })
+            .finally(() => {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Notify Me';
+            });
+        });
+    </script>
+</body>
+</html>
